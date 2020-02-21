@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
 import config
 import telebot
+import logging
+import os
+from aiogram import Bot, types, md
+from aiogram.dispatcher import Dispatcher
+from aiogram.utils.executor import start_webhook
 
-bot = telebot.TeleBot(config.token)
+TOKEN = os.environ['TOKEN']
 
 @bot.message_handler(content_types=["text"])
 def repeat_all_messages(message): # Название функции не играет никакой роли, в принципе
