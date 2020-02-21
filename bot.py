@@ -1,18 +1,33 @@
 import telebot
-import logging
+# bot.py
+import requests  
 import os
-from aiogram import Bot, types, md
-from aiogram.dispatcher import Dispatcher
-from aiogram.utils.executor import start_webhook
+from flask import Flask, request# Add your telegram token as environment variable
+BOT_URL = f'https://api.telegram.org/bot{os.environ["TOKEN"]}/'
 
-TOKEN = os.environ['TOKEN']
 
-bot = telebot.TeleBot(TOKEN)
+app = Flask(__name__)
 
-@bot.message_handler(content_types=["text"])
-def repeat_all_messages(message): # Название функции не играет никакой роли, в принципе
-    bot.send_message(message.chat.id, message.text)
 
-if __name__ == '__main__':
-     bot.polling(none_stop=True)
-	 
+@app.route('/', methods=['POST'])
+def main():  
+    data = request.json
+
+    print(data)  # Comment to hide what Telegram is sending you
+    chat_id = data['message']['chat']['id']
+    message = data['message']['text']
+
+    json_data = {
+        "chat_id": chat_id,
+        "text": message,
+    }
+
+    message_url = BOT_URL + 'sendMessage'
+    requests.post(message_url, json=json_data)
+
+    return ''
+
+
+if __name__ == '__main__':  
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
