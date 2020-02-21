@@ -25,7 +25,7 @@ async def welcome(message: types.Message):
         message.chat.id,
         f'Приветствую! Это демонтрационный бот\n'
         f'Подробная информация на '
-        f'{md.hlink("github", "https://github.com/deploy-your-bot-everywhere/heroku")}',
+        f'{md.hlink("github", "https://github.com/alcokinoclub_bot/heroku")}',
         parse_mode=types.ParseMode.HTML,
         disable_web_page_preview=True)
 
